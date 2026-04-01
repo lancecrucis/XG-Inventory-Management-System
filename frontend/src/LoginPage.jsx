@@ -250,7 +250,7 @@ function LoginPage() {
       setError(data.message)
     } else {
       localStorage.setItem("token", data.token)
-      alert("Login successful! Welcome to XG Inventory!")
+      window.location.href = '/products'
     }
   } catch (error) {
     setError("Something went wrong. Please try again.")
@@ -667,7 +667,7 @@ function LoginPage() {
 
             <Button
               type="submit"
-              className="w-full h-12 text-base font-medium"
+              className="w-full h-12 text-base font-medium bg-zinc-700 hover:bg-zinc-900 text-white border-none"
               size="lg"
               disabled={isLoading}
             >

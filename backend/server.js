@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import authRoutes from './src/routes/authRoutes.js'
+import productRoutes from './src/routes/productRoutes.js'
 
 dotenv.config()
 
@@ -12,6 +13,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
+app.use('/api/products', productRoutes)
 
 const PORT = process.env.PORT || 5000
 
