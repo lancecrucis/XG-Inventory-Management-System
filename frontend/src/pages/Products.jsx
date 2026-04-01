@@ -154,12 +154,12 @@ function Products() {
                     <td className="px-6 py-4 font-medium">{product.name}</td>
                     <td className="px-6 py-4 text-muted-foreground">₱{Number(product.price).toLocaleString()}</td>
                     <td className="px-6 py-4">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      <span className={`inline-flex items-center px-2.5 py-0.5 text-xs font-medium ${
                         product.quantity === 0
-                          ? 'bg-red-100 text-red-700'
+                          ? ' text-red-700'
                           : product.quantity < 10
-                          ? 'bg-yellow-100 text-yellow-700'
-                          : 'bg-green-100 text-green-700'
+                          ? ' text-red-800'
+                          : ' text-green-800'
                       }`}>
                         {product.quantity} in stock
                       </span>
