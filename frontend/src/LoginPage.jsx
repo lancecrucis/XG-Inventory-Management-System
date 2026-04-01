@@ -236,16 +236,26 @@ function LoginPage() {
   const orangePos = calculatePosition(orangeRef);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    if (email === "admin@xg.com" && password === "admin123") {
-      alert("Login successful! Welcome to XG Inventory Management System!");
+    e.preventDefault()
+  setError("")
+  setIsLoading(true)
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    })
+    const data = await response.json()
+    if (!response.ok) {
+      setError(data.message)
     } else {
-      setError("Invalid email or password. Please try again.");
+      localStorage.setItem("token", data.token)
+      alert("Login successful! Welcome to XG Inventory!")
     }
-    setIsLoading(false);
+  } catch (error) {
+    setError("Something went wrong. Please try again.")
+  }
+  setIsLoading(false)
   };
 
   return (
