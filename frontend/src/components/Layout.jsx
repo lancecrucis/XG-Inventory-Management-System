@@ -9,7 +9,7 @@ function Layout({ children }) {
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       <main
         className="flex-1 transition-all duration-300 ease-in-out"
-        style={{ marginLeft: isOpen ? '0px' : '68px' }}
+        style={{ marginLeft: isOpen ? '20px' : '68px' }}
       >
         {children}
       </main>

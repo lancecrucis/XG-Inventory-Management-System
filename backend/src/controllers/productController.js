@@ -13,11 +13,19 @@ export const getProducts = async (req, res) => {
 // Add a product
 export const addProduct = async (req, res) => {
   try {
-    const { name, price, quantity } = req.body
-    const product = await Product.create({ name, price, quantity })
+    const { name, supplier, unitPrice, quantity, lowStockThreshold } = req.body
+    const product = new Product({
+      name,
+      supplier,
+      unitPrice: Number(unitPrice),
+      quantity: Number(quantity),
+      lowStockThreshold: Number(lowStockThreshold),
+    })
+    await product.save()
     res.status(201).json(product)
   } catch (error) {
-    res.status(500).json({ message: 'Server error' })
+    console.log('ADD PRODUCT ERROR:', error.message)
+    res.status(500).json({ message: error.message })
   }
 }
 
