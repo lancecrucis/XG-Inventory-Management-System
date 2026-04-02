@@ -4,6 +4,8 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import authRoutes from './src/routes/authRoutes.js'
 import productRoutes from './src/routes/productRoutes.js'
+import inventoryRoutes from './src/routes/inventoryRoutes.js'
+import supplierRoutes from './src/routes/supplierRoutes.js'
 
 dotenv.config()
 
@@ -14,6 +16,8 @@ app.use(express.json())
 
 app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
+app.use('/api/inventory', inventoryRoutes)
+app.use('/api/suppliers', supplierRoutes)
 
 const PORT = process.env.PORT || 5000
 

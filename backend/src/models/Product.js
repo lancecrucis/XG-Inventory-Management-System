@@ -17,17 +17,8 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  lowStockThreshold: {
-    type: Number,
-    default: 10,
-  },
 }, { timestamps: true })
 
-// Auto generate SKU before saving
 productSchema.pre('save', async function () {
   if (!this.sku) {
     const count = await mongoose.model('Product').countDocuments()

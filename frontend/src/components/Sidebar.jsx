@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard,
   Package,
+  Boxes,
   Users,
   Truck,
   ClipboardList,
@@ -16,6 +17,7 @@ import logo from '../assets/xgLogo.png'
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
   { label: 'Products', icon: Package, path: '/products' },
+  { label: 'Inventory', icon: Boxes, path: '/inventory' },
   { label: 'Suppliers', icon: Truck, path: '/suppliers' },
   { label: 'Customers', icon: Users, path: '/customers' },
   { label: 'User Logs', icon: ClipboardList, path: '/logs' },
