@@ -6,6 +6,8 @@ import authRoutes from './src/routes/authRoutes.js'
 import productRoutes from './src/routes/productRoutes.js'
 import inventoryRoutes from './src/routes/inventoryRoutes.js'
 import supplierRoutes from './src/routes/supplierRoutes.js'
+import saleRoutes from './src/routes/saleRoutes.js'
+import expenseRoutes from './src/routes/expenseRoutes.js'
 
 dotenv.config()
 
@@ -18,6 +20,8 @@ app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/inventory', inventoryRoutes)
 app.use('/api/suppliers', supplierRoutes)
+app.use('/api/sales', saleRoutes)
+app.use('/api/expenses', expenseRoutes)
 
 const PORT = process.env.PORT || 5000
 

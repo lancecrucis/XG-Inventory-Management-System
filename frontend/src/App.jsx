@@ -4,6 +4,8 @@ import Products from './pages/Products'
 import Inventory from './pages/Inventory'
 import Suppliers from './pages/Suppliers'
 import Layout from './components/Layout'
+import Sales from './pages/Sales'
+import Expenses from './pages/Expenses'
 
 function App() {
   const token = localStorage.getItem('token')
@@ -24,8 +26,8 @@ function App() {
         <Route path="/inventory" element={token ? <Layout><Inventory /></Layout> : <Navigate to="/" />} />
         <Route path="/suppliers" element={token ? <Layout><Suppliers /></Layout> : <Navigate to="/" />} />
         <Route path="/customers" element={token ? <Layout><ComingSoon page="Customers" /></Layout> : <Navigate to="/" />} />
-        <Route path="/sales" element={token ? <Layout><ComingSoon page="Sales" /></Layout> : <Navigate to="/" />} />
-        <Route path="/expenses" element={token ? <Layout><ComingSoon page="Expenses" /></Layout> : <Navigate to="/" />} />
+        <Route path="/sales" element={token ? <Layout><Sales /></Layout> : <Navigate to="/" />} />
+        <Route path="/expenses" element={token ? <Layout><Expenses /></Layout> : <Navigate to="/" />} />
         <Route path="/reports" element={token ? <Layout><ComingSoon page="Reports" /></Layout> : <Navigate to="/" />} />
         <Route path="/logs" element={token ? <Layout><ComingSoon page="User Logs" /></Layout> : <Navigate to="/" />} />
         <Route path="*" element={<Navigate to="/" />} />
