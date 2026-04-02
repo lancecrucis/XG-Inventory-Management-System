@@ -6,21 +6,46 @@ import {
   Boxes,
   Users,
   Truck,
+  ShoppingCart,
+  Receipt,
+  BarChart2,
   ClipboardList,
   LogOut,
+  Menu,
   ChevronLeft,
   ChevronRight,
-  Menu,
 } from 'lucide-react'
 import logo from '../assets/xgLogo.png'
  
-const navItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
-  { label: 'Products', icon: Package, path: '/products' },
-  { label: 'Inventory', icon: Boxes, path: '/inventory' },
-  { label: 'Suppliers', icon: Truck, path: '/suppliers' },
-  { label: 'Customers', icon: Users, path: '/customers' },
-  { label: 'User Logs', icon: ClipboardList, path: '/logs' },
+const navGroups = [
+  {
+    items: [
+      { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
+    ]
+  },
+  {
+    group: 'Inventory',
+    items: [
+      { label: 'Products', icon: Package, path: '/products' },
+      { label: 'Inventory', icon: Boxes, path: '/inventory' },
+      { label: 'Suppliers', icon: Truck, path: '/suppliers' },
+      { label: 'Customers', icon: Users, path: '/customers' },
+    ]
+  },
+  {
+    group: 'Business',
+    items: [
+      { label: 'Sales', icon: ShoppingCart, path: '/sales' },
+      { label: 'Expenses', icon: Receipt, path: '/expenses' },
+      { label: 'Reports', icon: BarChart2, path: '/reports' },
+    ]
+  },
+  {
+    group: 'System',
+    items: [
+      { label: 'User Logs', icon: ClipboardList, path: '/logs' },
+    ]
+  },
 ]
  
 function Sidebar() {
@@ -78,50 +103,61 @@ function Sidebar() {
         </button>
  
         {/* Nav items */}
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path
-            const Icon = item.icon
-            return (
-              <button
-                key={item.path}
-                onClick={() => navigate(item.path)}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 group relative"
-                style={{
-                  background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
-                  color: isActive ? '#ffffff' : 'rgba(255,255,255,0.5)',
-                }}
-                onMouseEnter={e => {
-                  if (!isActive) e.currentTarget.style.background = 'rgba(255,255,255,0.06)'
-                  e.currentTarget.style.color = '#ffffff'
-                }}
-                onMouseLeave={e => {
-                  if (!isActive) e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color = isActive ? '#ffffff' : 'rgba(255,255,255,0.5)'
-                }}
-              >
-                <Icon className="size-4 flex-shrink-0" />
-                {isOpen && (
-                  <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>
-                )}
-                {isActive && (
-                  <div
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full"
-                    style={{ background: '#E8D754' }}
-                  />
-                )}
-                {/* Tooltip when collapsed */}
-                {!isOpen && (
-                  <div className="absolute left-full ml-3 px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50"
-                    style={{ background: '#333', color: '#fff' }}
-                  >
-                    {item.label}
-                  </div>
-                )}
-              </button>
-            )
-          })}
-        </nav>
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-hidden">
+  {navGroups.map((group, groupIndex) => (
+    <div key={groupIndex} className="mb-2">
+      {group.group && isOpen && (
+        <p className="text-xs font-medium px-3 py-2 uppercase tracking-wider"
+          style={{ color: 'rgba(255,255,255,0.25)' }}>
+          {group.group}
+        </p>
+      )}
+      {group.group && !isOpen && (
+        <div className="my-2" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }} />
+      )}
+      {group.items.map((item) => {
+        const isActive = location.pathname === item.path
+        const Icon = item.icon
+        return (
+          <button
+            key={item.path}
+            onClick={() => navigate(item.path)}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 group relative"
+            style={{
+              background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
+              color: isActive ? '#ffffff' : 'rgba(255,255,255,0.5)',
+            }}
+            onMouseEnter={e => {
+              if (!isActive) e.currentTarget.style.background = 'rgba(255,255,255,0.06)'
+              e.currentTarget.style.color = '#ffffff'
+            }}
+            onMouseLeave={e => {
+              if (!isActive) e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = isActive ? '#ffffff' : 'rgba(255,255,255,0.5)'
+            }}
+          >
+            <Icon className="size-4 flex-shrink-0" />
+            {isOpen && (
+              <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>
+            )}
+            {isActive && (
+              <div
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full"
+                style={{ background: '#E8D754' }}
+              />
+            )}
+            {!isOpen && (
+              <div className="absolute left-full ml-3 px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50"
+                style={{ background: '#333', color: '#fff' }}>
+                {item.label}
+              </div>
+            )}
+          </button>
+        )
+      })}
+    </div>
+  ))}
+</nav>
  
         {/* Logout */}
         <div className="px-3 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>

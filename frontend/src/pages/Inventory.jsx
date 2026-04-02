@@ -163,9 +163,9 @@ function Inventory() {
   }
 
   const getStockStatus = (inv) => {
-    if (inv.quantity === 0) return { label: 'No Stock', color: 'bg-red-100 text-red-700' }
-    if (inv.quantity <= inv.lowStockThreshold) return { label: 'Low Stock', color: 'bg-yellow-100 text-yellow-700' }
-    return { label: 'In Stock', color: 'bg-green-100 text-green-700' }
+    if (inv.quantity === 0) return { label: 'No Stock', color: ' text-red-700' }
+    if (inv.quantity <= inv.lowStockThreshold) return { label: 'Low Stock', color: ' text-yellow-700' }
+    return { label: 'In Stock', color: ' text-green-700' }
   }
 
   const filteredInventory = inventory.filter(inv => {
@@ -357,7 +357,7 @@ function Inventory() {
           <div className="rounded-xl p-6 w-full max-w-md" style={{ background: 'white', border: '1px solid #e5e7eb', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-semibold">
-                {modalType === 'add' ? '➕ Add Stock' : '➖ Remove Stock'} — {selectedInventory?.product?.name}
+                {modalType === 'add' ? '+ Add Stock' : '- Remove Stock'} — {selectedInventory?.product?.name}
               </h3>
               <button onClick={() => setIsModalOpen(false)} className="text-muted-foreground hover:text-foreground">
                 <X className="size-5" />
