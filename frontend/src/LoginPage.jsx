@@ -250,7 +250,7 @@ function LoginPage() {
       setError(data.message)
     } else {
       localStorage.setItem("token", data.token)
-      window.location.href = '/products'
+      window.location.href = '/dashboard'
     }
   } catch (error) {
     setError("Something went wrong. Please try again.")
