@@ -60,8 +60,7 @@ export const getReport = async (req, res) => {
     })
 
     const topProducts = Object.values(productSales)
-      .sort((a, b) => b.revenue - a.revenue)
-      .slice(0, 5)
+      .sort((a, b) => b.revenue - a.revenue);
 
     res.status(200).json({
       totalRevenue,
