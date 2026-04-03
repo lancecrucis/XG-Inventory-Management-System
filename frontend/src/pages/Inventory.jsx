@@ -489,8 +489,11 @@ function Inventory() {
                 {history.map((h) => (
                   <div key={h._id} className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#f9fafb' }}>
                     <div className="flex items-center gap-3">
-                      <span className={`size-8 rounded-full flex items-center justify-center text-xs font-bold ${h.type === 'add' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                        {h.type === 'add' ? '+' : '-'}
+                      <span className={`size-8 rounded-full flex items-center justify-center text-lg ${h.type === 'add' ? 'border-1 border-green-500 bg-green-100 text-green-700' : ' border-1 border-red-500 bg-[#f9c7c6] text-red-700'}`}>
+                        {h.type === 'add' ? (<Plus className="size-4"/>):(
+                          <Minus className="size-4" />
+                        )}
+
                       </span>
                       <div>
                         <p className="text-sm font-medium">{h.product?.name}</p>

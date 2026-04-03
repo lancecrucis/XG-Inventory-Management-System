@@ -179,7 +179,7 @@ function Sales() {
         </div>
 
         {/* Summary Card */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-3 gap-4 mb-6 ">
           <div className="border border-border/60 rounded-lg p-4">
             <p className="text-sm text-muted-foreground">Total Revenue</p>
             <p className="text-2xl font-bold mt-1">₱{totalRevenue.toLocaleString()}</p>
@@ -188,7 +188,7 @@ function Sales() {
             <p className="text-sm text-muted-foreground">Total Sales</p>
             <p className="text-2xl font-bold mt-1">{sales.length}</p>
           </div>
-          <div className="border border-border/60 rounded-lg p-4">
+          <div className="border border-border/60 rounded-lg p-4 text-[#159644]">
             <p className="text-sm text-muted-foreground">Average Sale</p>
             <p className="text-2xl font-bold mt-1">₱{sales.length > 0 ? Math.round(totalRevenue / sales.length).toLocaleString() : 0}</p>
           </div>
@@ -281,7 +281,7 @@ function Sales() {
             </div>
 
             {/* Add product to cart */}
-            <div className="p-4 rounded-lg mb-4" style={{ background: '#f9fafb' }}>
+            <div className="p-4 rounded-lg mb-4" style={{ background: '#f0f0f0' }}>
               <p className="text-sm font-medium mb-3">Add Product</p>
               <div className="flex gap-2">
                 <select
@@ -353,7 +353,7 @@ function Sales() {
             <div className="space-y-2 mb-4">
               <Label>Note (optional)</Label>
               <Input
-                placeholder="e.g. Walk-in customer"
+                placeholder="Note or reference no."
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
               />
@@ -387,7 +387,7 @@ function Sales() {
 
             <div className="space-y-3 mb-4">
               {selectedSale.items.map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#f9fafb' }}>
+                <div key={index} className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#f0f0f0' }}>
                   <div>
                     <p className="text-sm font-medium">{item.product?.name}</p>
                     <p className="text-xs text-muted-foreground">{item.quantity} × ₱{item.unitPrice.toLocaleString()}</p>

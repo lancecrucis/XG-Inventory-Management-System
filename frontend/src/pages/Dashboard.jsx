@@ -141,8 +141,8 @@ function Dashboard() {
         {/* Summary Cards — no icons, clean */}
         <div className="grid grid-cols-4 gap-4 mb-6">
           {[
-            { label: 'Total Revenue', value: `₱${(report?.totalRevenue || 0).toLocaleString()}`, sub: `${report?.totalSales || 0} sales`, valueColor: '#16a34a' },
-            { label: 'Net Profit', value: `₱${(report?.netProfit || 0).toLocaleString()}`, sub: 'After all costs', valueColor: isProfit ? '#16a34a' : '#dc2626' },
+            { label: 'Total Revenue', value: `₱${(report?.totalRevenue || 0).toLocaleString()}`, sub: `${report?.totalSales || 0} sales`, valueColor: '#159644' },
+            { label: 'Net Profit', value: `₱${(report?.netProfit || 0).toLocaleString()}`, sub: 'After all costs', valueColor: isProfit ? '#159644' : '#dc2626' },
             { label: 'Inventory Value', value: `₱${totalInventoryValue.toLocaleString()}`, sub: `${totalItems} total units` },
             { label: 'Stock Alerts', 
             value: `${lowStockItems.length + noStockItems.length}`, 

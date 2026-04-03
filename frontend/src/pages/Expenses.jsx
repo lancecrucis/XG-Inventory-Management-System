@@ -8,12 +8,12 @@ import companyLogo from '../assets/companyLogo.png'
 const CATEGORIES = ['Electricity', 'Packaging', 'Shipping', 'Marketing', 'Maintenance', 'Other']
 
 const CATEGORY_COLORS = {
-  Electricity: 'bg-yellow-100 text-yellow-700',
-  Packaging: 'bg-blue-100 text-blue-700',
-  Shipping: 'bg-purple-100 text-purple-700',
-  Marketing: 'bg-pink-100 text-pink-700',
-  Maintenance: 'bg-orange-100 text-orange-700',
-  Other: 'bg-gray-100 text-gray-700',
+  Electricity: 'bg-yellow-100 text-yellow-700 border-1 border-yellow-500',
+  Packaging: 'bg-blue-100 text-[#2a54a1] border-1 border-blue-500',
+  Shipping: 'bg-sky-100 text-sky-700 border-1 border-sky-500',
+  Marketing: 'bg-orange-100 text-orange-700 border-1 border-orange-500',
+  Maintenance: 'bg-red-100 text-red-700 border-1 border-red-500',
+  Other: 'bg-gray-100 text-gray-700 border-1 border-gray-500',
 }
 
 function Expenses() {
@@ -141,7 +141,7 @@ function Expenses() {
             <p className="text-2xl font-bold mt-1">₱{totalExpenses.toLocaleString()}</p>
           </div>
           {expensesByCategory.slice(0, 3).map(c => (
-            <div key={c.category} className="border border-border/60 rounded-lg p-4">
+            <div key={c.category} className="border border-border/60 rounded-lg p-4 text-red-500">
               <p className="text-sm text-muted-foreground">{c.category}</p>
               <p className="text-2xl font-bold mt-1">₱{c.total.toLocaleString()}</p>
             </div>
@@ -217,7 +217,7 @@ function Expenses() {
                     className={`border-b border-border/40 hover:bg-muted/30 transition-colors ${index % 2 === 0 ? '' : 'bg-muted/10'}`}
                   >
                     <td className="px-6 py-4">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[expense.category]}`}>
+                      <span className={`inline-flex items-center px-5 py-2 rounded-full text-xs font-medium ${CATEGORY_COLORS[expense.category]}`}>
                         {expense.category}
                       </span>
                     </td>

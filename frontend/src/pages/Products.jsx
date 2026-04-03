@@ -224,7 +224,7 @@ function Products() {
                 <Label htmlFor="name">Product Name <span className="text-red-500">*</span></Label>
                 <Input
                   id="name"
-                  placeholder="e.g. Office Chair"
+                  placeholder="Products"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />
@@ -234,7 +234,7 @@ function Products() {
                 <Label htmlFor="supplier">Supplier</Label>
                 <Input
                   id="supplier"
-                  placeholder="e.g. ABC Supplies"
+                  placeholder="Supplier"
                   value={form.supplier}
                   onChange={(e) => setForm({ ...form, supplier: e.target.value })}
                 />

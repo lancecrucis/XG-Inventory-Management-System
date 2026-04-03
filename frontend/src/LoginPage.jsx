@@ -660,8 +660,8 @@ function LoginPage() {
             </div>
 
             {error && (
-              <div className="p-3 text-sm text-red-400 bg-red-950/20 border border-red-900/30 rounded-lg">
-                {error}
+              <div className="p-3 text-sm text-red-600 bg-[#f9c7c6] border border-[#c17b79] rounded-lg">
+                  {error}
               </div>
             )}
 
