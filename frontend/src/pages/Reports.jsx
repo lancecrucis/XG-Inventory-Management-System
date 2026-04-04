@@ -191,10 +191,29 @@ function Reports() {
       default:
         return
     }
-
-    setStartDate(start.toISOString().split('T')[0])
-    setEndDate(end.toISOString().split('T')[0])
+    const formatToLocal = (date) => {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
   }
+
+  const startStr = formatToLocal(start)
+  const endStr = formatToLocal(end)
+  setStartDate(startStr)
+  setEndDate(endStr)
+
+    
+  }
+
+  const formatDate = (dateStr) => {
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
+  const [year, month, day] = dateStr.split('-')
+  return `${months[parseInt(month) - 1]} ${parseInt(day)}, ${year}`
+}
 
   return (
     <div className="min-h-screen bg-background">
@@ -269,7 +288,7 @@ function Reports() {
   {/* Active filter label */}
   {(startDate && endDate) && (
     <p className="text-xs text-muted-foreground mt-2">
-      Showing data from <strong>{new Date(startDate).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' })}</strong> to <strong>{new Date(endDate).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' })}</strong>
+      Showing data from <strong>{formatDate(startDate)}</strong> to <strong>{formatDate(endDate)}</strong>
     </p>
   )}
 </div>
