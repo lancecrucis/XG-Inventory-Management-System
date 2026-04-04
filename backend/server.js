@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-dotenv.config()
+dotenv.config({ path: '.env', override: false })
 
 import express from 'express'
 import mongoose from 'mongoose'
