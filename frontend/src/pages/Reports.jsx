@@ -37,14 +37,22 @@ function Reports() {
   const [sales, setSales] = useState([])
   const [expenses, setExpenses] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [activePeriod, setActivePeriod] = useState('all')
 
   const fetchData = async () => {
     try {
+      const params = startDate && endDate
+        ? `?startDate=${startDate}&endDate=${endDate}`
+        : ''
+
       const [reportRes, salesRes, expensesRes] = await Promise.all([
-        fetch('http://localhost:5000/api/reports'),
-        fetch('http://localhost:5000/api/sales'),
-        fetch('http://localhost:5000/api/expenses'),
+        fetch(`http://localhost:5000/api/reports${params}`),
+        fetch(`http://localhost:5000/api/sales`),
+        fetch(`http://localhost:5000/api/expenses`),
       ])
+
       const [reportData, salesData, expensesData] = await Promise.all([
         reportRes.json(),
         salesRes.json(),
@@ -61,7 +69,7 @@ function Reports() {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [startDate, endDate])
 
   if (isLoading) {
     return (
@@ -154,6 +162,40 @@ function Reports() {
     },
   ]
 
+  const handlePeriodSelect = (period) => {
+    setActivePeriod(period)
+    const now = new Date()
+    let start, end
+
+    switch(period) {
+      case 'this_month':
+        start = new Date(now.getFullYear(), now.getMonth(), 1)
+        end = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+        break
+      case 'last_month':
+        start = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+        end = new Date(now.getFullYear(), now.getMonth(), 0)
+        break
+      case 'last_3_months':
+        start = new Date(now.getFullYear(), now.getMonth() - 3, 1)
+        end = now
+        break
+      case 'this_year':
+        start = new Date(now.getFullYear(), 0, 1)
+        end = now
+        break
+      case 'all':
+        setStartDate('')
+        setEndDate('')
+        return
+      default:
+        return
+    }
+
+    setStartDate(start.toISOString().split('T')[0])
+    setEndDate(end.toISOString().split('T')[0])
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
@@ -177,9 +219,60 @@ function Reports() {
       <div className="p-8">
         {/* Header */}
         <div className="mb-6">
-          <h2 className="text-2xl font-bold">Reports</h2>
-          <p className="text-sm text-muted-foreground mt-1">Detailed business performance analysis</p>
-        </div>
+  <h2 className="text-2xl font-bold">Reports</h2>
+  <p className="text-sm text-muted-foreground mt-1">Detailed business performance analysis</p>
+
+  {/* Period Filter */}
+  <div className="flex items-center gap-2 mt-4 flex-wrap">
+    {[
+      { key: 'all', label: 'All Time' },
+      { key: 'this_month', label: 'This Month' },
+      { key: 'last_month', label: 'Last Month' },
+      { key: 'last_3_months', label: 'Last 3 Months' },
+      { key: 'this_year', label: 'This Year' },
+    ].map(period => (
+      <button
+        key={period.key}
+        onClick={() => handlePeriodSelect(period.key)}
+        className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
+        style={{
+          background: activePeriod === period.key ? '#1a1a1a' : 'transparent',
+          color: activePeriod === period.key ? '#fff' : 'var(--muted-foreground)',
+          border: '1px solid',
+          borderColor: activePeriod === period.key ? '#1a1a1a' : 'var(--border)',
+        }}
+      >
+        {period.label}
+      </button>
+    ))}
+
+    {/* Custom date range */}
+    <div className="flex items-center gap-2 ml-2">
+      <input
+        type="date"
+        value={startDate}
+        onChange={(e) => { setStartDate(e.target.value); setActivePeriod('custom') }}
+        className="h-8 rounded-lg border px-2 text-xs"
+        style={{ borderColor: 'var(--border)', background: 'var(--background)', color: 'var(--foreground)' }}
+      />
+      <span className="text-xs text-muted-foreground">to</span>
+      <input
+        type="date"
+        value={endDate}
+        onChange={(e) => { setEndDate(e.target.value); setActivePeriod('custom') }}
+        className="h-8 rounded-lg border px-2 text-xs"
+        style={{ borderColor: 'var(--border)', background: 'var(--background)', color: 'var(--foreground)' }}
+      />
+    </div>
+  </div>
+
+  {/* Active filter label */}
+  {(startDate && endDate) && (
+    <p className="text-xs text-muted-foreground mt-2">
+      Showing data from <strong>{new Date(startDate).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' })}</strong> to <strong>{new Date(endDate).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' })}</strong>
+    </p>
+  )}
+</div>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-4 gap-4 mb-6">

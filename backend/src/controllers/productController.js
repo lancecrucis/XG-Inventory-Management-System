@@ -13,8 +13,9 @@ export const getProducts = async (req, res) => {
 // Add a product
 export const addProduct = async (req, res) => {
   try {
-    const { name, supplier, unitPrice, quantity, lowStockThreshold } = req.body
+    const { sku, name, supplier, unitPrice, quantity, lowStockThreshold } = req.body
     const product = new Product({
+      sku,
       name,
       supplier,
       unitPrice: Number(unitPrice),

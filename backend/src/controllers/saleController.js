@@ -5,7 +5,7 @@ import StockHistory from '../models/StockHistory.js'
 // Get all sales
 export const getSales = async (req, res) => {
   try {
-    const sales = await Sale.find()
+    const sales = await Sale.find().sort({ createdAt: -1 })
       .populate('items.product')
       .sort({ createdAt: -1 })
     res.status(200).json(sales)

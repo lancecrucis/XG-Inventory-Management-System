@@ -4,6 +4,7 @@ const productSchema = new mongoose.Schema({
   sku: {
     type: String,
     unique: true,
+    required: true,
   },
   name: {
     type: String,
@@ -13,17 +14,15 @@ const productSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
+  unitCost: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
   unitPrice: {
     type: Number,
     required: true,
   },
 }, { timestamps: true })
-
-productSchema.pre('save', async function () {
-  if (!this.sku) {
-    const count = await mongoose.model('Product').countDocuments()
-    this.sku = `PRD-${String(count + 1).padStart(3, '0')}`
-  }
-})
 
 export default mongoose.model('Product', productSchema)

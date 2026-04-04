@@ -1,21 +1,40 @@
 import Sale from '../models/Sale.js'
 import Expense from '../models/Expense.js'
 import Inventory from '../models/Inventory.js'
-import Product from '../models/Product.js'
 
 export const getReport = async (req, res) => {
   try {
-    const sales = await Sale.find().populate('items.product')
-    const expenses = await Expense.find()
+    const { startDate, endDate } = req.query
+
+    // Build date filter
+    const dateFilter = {}
+    if (startDate && endDate) {
+      dateFilter.createdAt = {
+        $gte: new Date(startDate),
+        $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)),
+      }
+    }
+
+    const expenseDateFilter = {}
+    if (startDate && endDate) {
+      expenseDateFilter.date = {
+        $gte: new Date(startDate),
+        $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)),
+      }
+    }
+
+    const sales = await Sale.find(dateFilter).populate('items.product')
+    const expenses = await Expense.find(expenseDateFilter)
     const inventory = await Inventory.find().populate('product')
 
     // Total Revenue
     const totalRevenue = sales.reduce((sum, sale) => sum + sale.totalAmount, 0)
 
-    // COGS - Cost of Goods Sold
+    // COGS
     const totalCOGS = sales.reduce((sum, sale) => {
       return sum + sale.items.reduce((itemSum, item) => {
-        return itemSum + (item.unitPrice * item.quantity)
+        const cost = item.product?.unitCost || 0
+        return itemSum + (cost * item.quantity)
       }, 0)
     }, 0)
 
@@ -34,7 +53,7 @@ export const getReport = async (req, res) => {
       return acc
     }, {})
 
-    // Total inventory value
+    // Inventory value
     const inventoryValue = inventory.reduce((sum, inv) => {
       return sum + (inv.product?.unitPrice || 0) * inv.quantity
     }, 0)
@@ -60,7 +79,8 @@ export const getReport = async (req, res) => {
     })
 
     const topProducts = Object.values(productSales)
-      .sort((a, b) => b.revenue - a.revenue);
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 5)
 
     res.status(200).json({
       totalRevenue,

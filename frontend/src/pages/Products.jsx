@@ -13,8 +13,10 @@ function Products() {
   const [isLoading, setIsLoading] = useState(false)
   const [search, setSearch] = useState('')
   const [form, setForm] = useState({
+    sku: '',
     name: '',
     supplier: '',
+    unitCost: '',
     unitPrice: '',
   })
   const [error, setError] = useState('')
@@ -34,7 +36,7 @@ function Products() {
   }, [])
 
   const handleOpenAdd = () => {
-    setForm({ name: '', supplier: '', unitPrice: '' })
+    setForm({ sku: '', name: '', supplier: '', unitCost: '', unitPrice: '' })
     setIsEditing(false)
     setSelectedProduct(null)
     setError('')
@@ -43,10 +45,12 @@ function Products() {
 
   const handleOpenEdit = (product) => {
     setForm({
-      name: product.name,
-      supplier: product.supplier || '',
-      unitPrice: product.unitPrice,
-    })
+    sku: product.sku || '',
+    name: product.name,
+    supplier: product.supplier || '',
+    unitCost: product.unitCost || '',
+    unitPrice: product.unitPrice,
+  })
     setIsEditing(true)
     setSelectedProduct(product)
     setError('')
@@ -59,8 +63,12 @@ function Products() {
   }
 
   const handleSubmit = async () => {
-    if (!form.name || !form.unitPrice) {
+    if (!form.sku || !form.name || !form.unitPrice || !form.unitCost) { 
       setError('Please fill in all required fields')
+      return
+    }
+    if (Number(form.unitCost) >= Number(form.unitPrice)) {
+      setError('Unit cost must be lower than unit price!')
       return
     }
     setIsLoading(true)
@@ -74,8 +82,10 @@ function Products() {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          sku: form.sku,
           name: form.name,
           supplier: form.supplier,
+          unitCost: Number(form.unitCost),
           unitPrice: Number(form.unitPrice),
         }),
       })
@@ -103,6 +113,12 @@ function Products() {
     p.sku?.toLowerCase().includes(search.toLowerCase()) ||
     p.supplier?.toLowerCase().includes(search.toLowerCase())
   )
+
+  const getMargin = (product) => {
+    if (!product.unitCost || !product.unitPrice) return null
+    const margin = ((product.unitPrice - product.unitCost) / product.unitPrice * 100).toFixed(1)
+    return margin
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -151,52 +167,65 @@ function Products() {
                 <th className="text-left px-6 py-3 font-medium text-muted-foreground">SKU</th>
                 <th className="text-left px-6 py-3 font-medium text-muted-foreground">Product Name</th>
                 <th className="text-left px-6 py-3 font-medium text-muted-foreground">Supplier</th>
+                <th className="text-left px-6 py-3 font-medium text-muted-foreground">Unit Cost</th>
                 <th className="text-left px-6 py-3 font-medium text-muted-foreground">Unit Price</th>
+                <th className="text-left px-6 py-3 font-medium text-muted-foreground">Margin</th>
                 <th className="text-left px-6 py-3 font-medium text-muted-foreground">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="text-center py-16 text-muted-foreground">
+                  <td colSpan={7} className="text-center py-16 text-muted-foreground">
                     <PackageOpen className="size-10 mx-auto mb-3 opacity-30" />
                     <p>{search ? 'No products match your search' : 'No products yet — add your first one!'}</p>
                   </td>
                 </tr>
               ) : (
-                filteredProducts.map((product, index) => (
-                  <tr
-                    key={product._id}
-                    className={`border-b border-border/40 hover:bg-muted/30 transition-colors ${index % 2 === 0 ? '' : 'bg-muted/10'}`}
-                  >
-                    <td className="px-6 py-4 font-mono text-xs text-muted-foreground">{product.sku}</td>
-                    <td className="px-6 py-4 font-medium">{product.name}</td>
-                    <td className="px-6 py-4 text-muted-foreground">{product.supplier || '—'}</td>
-                    <td className="px-6 py-4">₱{Number(product.unitPrice).toLocaleString()}</td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="gap-1.5"
-                          onClick={() => handleOpenEdit(product)}
-                        >
-                          <Pencil className="size-3" />
-                          Edit
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="gap-1.5 text-red-500 hover:text-red-600 hover:border-red-300"
-                          onClick={() => handleDelete(product._id)}
-                        >
-                          <Trash2 className="size-3" />
-                          Delete
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                filteredProducts.map((product, index) => {
+                  const margin = getMargin(product)
+                  return (
+                    <tr
+                      key={product._id}
+                      className={`border-b border-border/40 hover:bg-muted/30 transition-colors ${index % 2 === 0 ? '' : 'bg-muted/10'}`}
+                    >
+                      <td className="px-6 py-4 font-mono text-xs text-muted-foreground">{product.sku}</td>
+                      <td className="px-6 py-4 font-medium">{product.name}</td>
+                      <td className="px-6 py-4 text-muted-foreground">{product.supplier || '—'}</td>
+                      <td className="px-6 py-4 text-muted-foreground">₱{Number(product.unitCost || 0).toLocaleString()}</td>
+                      <td className="px-6 py-4">₱{Number(product.unitPrice).toLocaleString()}</td>
+                      <td className="px-6 py-4">
+                        {margin !== null ? (
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${Number(margin) >= 30 ? 'bg-green-100 text-green-700' : Number(margin) >= 15 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>
+                            {margin}%
+                          </span>
+                        ) : '—'}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="gap-1.5"
+                            onClick={() => handleOpenEdit(product)}
+                          >
+                            <Pencil className="size-3" />
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="gap-1.5 text-red-500 hover:text-red-600 hover:border-red-300"
+                            onClick={() => handleDelete(product._id)}
+                          >
+                            <Trash2 className="size-3" />
+                            Delete
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })
               )}
             </tbody>
           </table>
@@ -221,10 +250,23 @@ function Products() {
 
             <div className="space-y-4">
               <div className="space-y-2">
+                <div className="space-y-2">
+
+                <Label htmlFor="sku">SKU <span className="text-red-500">*</span></Label>
+                <Input
+                  id="sku"
+                  placeholder="e.g. PRD-001"
+                  value={form.sku}
+                  onChange={(e) => setForm({ ...form, sku: e.target.value.toUpperCase() })}
+                />
+                <p className="text-xs text-muted-foreground">Unique product code</p>
+              </div>
+
+
                 <Label htmlFor="name">Product Name <span className="text-red-500">*</span></Label>
                 <Input
                   id="name"
-                  placeholder="Products"
+                  placeholder="e.g. Medical Gloves"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />
@@ -234,22 +276,54 @@ function Products() {
                 <Label htmlFor="supplier">Supplier</Label>
                 <Input
                   id="supplier"
-                  placeholder="Supplier"
+                  placeholder="e.g. Laguna Supplies"
                   value={form.supplier}
                   onChange={(e) => setForm({ ...form, supplier: e.target.value })}
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="unitPrice">Unit Price (₱) <span className="text-red-500">*</span></Label>
-                <Input
-                  id="unitPrice"
-                  type="number"
-                  placeholder="e.g. 1500"
-                  value={form.unitPrice}
-                  onChange={(e) => setForm({ ...form, unitPrice: e.target.value })}
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label htmlFor="unitCost">Unit Cost (₱) <span className="text-red-500">*</span></Label>
+                  <Input
+                    id="unitCost"
+                    type="number"
+                    placeholder="e.g. 500"
+                    value={form.unitCost}
+                    onChange={(e) => setForm({ ...form, unitCost: e.target.value })}
+                  />
+                  <p className="text-xs text-muted-foreground">What you paid the supplier</p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="unitPrice">Unit Price (₱) <span className="text-red-500">*</span></Label>
+                  <Input
+                    id="unitPrice"
+                    type="number"
+                    placeholder="e.g. 800"
+                    value={form.unitPrice}
+                    onChange={(e) => setForm({ ...form, unitPrice: e.target.value })}
+                  />
+                  <p className="text-xs text-muted-foreground">What you sell it for</p>
+                </div>
               </div>
+
+              {/* Live margin preview */}
+              {form.unitCost && form.unitPrice && Number(form.unitPrice) > Number(form.unitCost) && (
+                <div className="p-3 rounded-lg text-center" style={{ background: '#222222', border: '1px solid #696969' }}>
+                  <p className="text-xs text-green-300 font-medium ">
+                     Profit per unit: ₱{(Number(form.unitPrice) - Number(form.unitCost)).toLocaleString()}
+                    {' '}({((Number(form.unitPrice) - Number(form.unitCost)) / Number(form.unitPrice) * 100).toFixed(1)}% margin)
+                  </p>
+                </div>
+              )}
+
+              {form.unitCost && form.unitPrice && Number(form.unitCost) >= Number(form.unitPrice) && (
+                <div className="p-3 rounded-lg" style={{ background: '#fef2f2', border: '1px solid #fecaca' }}>
+                  <p className="text-xs text-red-600 font-medium">
+                    ⚠️ Unit cost must be lower than unit price!
+                  </p>
+                </div>
+              )}
 
               {error && (
                 <p className="text-sm text-red-500">{error}</p>
