@@ -1,7 +1,9 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
-import dotenv from 'dotenv'
 import authRoutes from './src/routes/authRoutes.js'
 import productRoutes from './src/routes/productRoutes.js'
 import inventoryRoutes from './src/routes/inventoryRoutes.js'
@@ -10,7 +12,7 @@ import saleRoutes from './src/routes/saleRoutes.js'
 import expenseRoutes from './src/routes/expenseRoutes.js'
 import reportRoutes from './src/routes/reportRoutes.js'
 
-dotenv.config()
+
 
 const app = express()
 
