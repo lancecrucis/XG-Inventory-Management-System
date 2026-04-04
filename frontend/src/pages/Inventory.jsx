@@ -24,7 +24,7 @@ function Inventory() {
 
   const fetchInventory = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/inventory')
+      const res = await fetch(`${API_URL}/api/inventory`)
       const data = await res.json()
       setInventory(data)
     } catch (error) {
@@ -34,7 +34,7 @@ function Inventory() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/products')
+      const res = await fetch(`${API_URL}/api/products`)
       const data = await res.json()
       setProducts(data)
     } catch (error) {
@@ -44,7 +44,7 @@ function Inventory() {
 
   const fetchHistory = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/inventory/history')
+      const res = await fetch(`${API_URL}/api/inventory/history`)
       const data = await res.json()
       setHistory(data)
     } catch (error) {
@@ -82,7 +82,7 @@ function Inventory() {
     setIsLoading(true)
     try {
       const endpoint = modalType === 'add' ? 'add' : 'remove'
-      const res = await fetch(`http://localhost:5000/api/inventory/${endpoint}`, {
+      const res = await fetch(`${API_URL}/api/inventory/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -117,7 +117,7 @@ function Inventory() {
     }
     setIsLoading(true)
     try {
-      await fetch('http://localhost:5000/api/inventory/add', {
+      await fetch(`${API_URL}/api/inventory/add`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

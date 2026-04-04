@@ -49,9 +49,9 @@ function Reports() {
         : ''
 
       const [reportRes, salesRes, expensesRes] = await Promise.all([
-        fetch(`http://localhost:5000/api/reports${params}`),
-        fetch(`http://localhost:5000/api/sales`),
-        fetch(`http://localhost:5000/api/expenses`),
+        fetch(`${API_URL}/api/reports${params}`),
+        fetch(`${API_URL}/api/sales`),
+        fetch(`${API_URL}/api/expenses`),
       ])
 
       const [reportData, salesData, expensesData] = await Promise.all([

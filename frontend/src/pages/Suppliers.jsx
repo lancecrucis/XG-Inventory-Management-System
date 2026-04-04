@@ -24,7 +24,7 @@ function Suppliers() {
 
   const fetchSuppliers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/suppliers')
+      const res = await fetch(`${API_URL}/api/suppliers`)
       const data = await res.json()
       setSuppliers(data)
     } catch (error) {
@@ -71,8 +71,8 @@ function Suppliers() {
     setIsLoading(true)
     try {
       const url = isEditing
-        ? `http://localhost:5000/api/suppliers/${selectedSupplier._id}`
-        : 'http://localhost:5000/api/suppliers'
+        ? `${API_URL}/api/suppliers/${selectedSupplier._id}`
+        : `${API_URL}/api/suppliers`
       const method = isEditing ? 'PUT' : 'POST'
 
       await fetch(url, {
@@ -92,7 +92,7 @@ function Suppliers() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this supplier?')) return
     try {
-      await fetch(`http://localhost:5000/api/suppliers/${id}`, { method: 'DELETE' })
+      await fetch(`${API_URL}/api/suppliers/${id}`, { method: 'DELETE' })
       await fetchSuppliers()
     } catch (error) {
       console.log(error)

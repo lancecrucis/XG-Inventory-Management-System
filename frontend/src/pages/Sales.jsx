@@ -22,7 +22,7 @@ function Sales() {
 
   const fetchSales = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/sales')
+      const res = await fetch(`${API_URL}/api/sales`)
       const data = await res.json()
       setSales(data)
     } catch (error) {
@@ -32,7 +32,7 @@ function Sales() {
 
   const fetchInventory = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/inventory')
+      const res = await fetch(`${API_URL}/api/inventory`)
       const data = await res.json()
       setInventory(data.filter(inv => inv.quantity > 0))
     } catch (error) {
@@ -105,7 +105,7 @@ function Sales() {
     }
     setIsLoading(true)
     try {
-      const res = await fetch('http://localhost:5000/api/sales', {
+      const res = await fetch(`${API_URL}/api/sales`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -135,7 +135,7 @@ function Sales() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this sale?')) return
     try {
-      await fetch(`http://localhost:5000/api/sales/${id}`, { method: 'DELETE' })
+      await fetch(`${API_URL}/api/sales/${id}`, { method: 'DELETE' })
       await fetchSales()
     } catch (error) {
       console.log(error)

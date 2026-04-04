@@ -33,7 +33,7 @@ function Expenses() {
 
   const fetchExpenses = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/expenses')
+      const res = await fetch(`${API_URL}/api/expenses`)
       const data = await res.json()
       setExpenses(data)
     } catch (error) {
@@ -63,7 +63,7 @@ function Expenses() {
     }
     setIsLoading(true)
     try {
-      const res = await fetch('http://localhost:5000/api/expenses', {
+      const res = await fetch(`${API_URL}/api/expenses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -85,7 +85,7 @@ function Expenses() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this expense?')) return
     try {
-      await fetch(`http://localhost:5000/api/expenses/${id}`, { method: 'DELETE' })
+      await fetch(`${API_URL}/api/expenses/${id}`, { method: 'DELETE' })
       await fetchExpenses()
     } catch (error) {
       console.log(error)

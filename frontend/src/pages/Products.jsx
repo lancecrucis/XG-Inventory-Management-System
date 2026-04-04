@@ -24,7 +24,7 @@ function Products() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/products')
+      const res = await fetch(`${API_URL}/api/products`)
       const data = await res.json()
       setProducts(data)
     } catch (error) {
@@ -75,8 +75,8 @@ function Products() {
     setIsLoading(true)
     try {
       const url = isEditing
-        ? `http://localhost:5000/api/products/${selectedProduct._id}`
-        : 'http://localhost:5000/api/products'
+        ? `${API_URL}/api/products/${selectedProduct._id}`
+        : `${API_URL}/api/products`
       const method = isEditing ? 'PUT' : 'POST'
 
       await fetch(url, {
@@ -102,7 +102,7 @@ function Products() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this product?')) return
     try {
-      await fetch(`http://localhost:5000/api/products/${id}`, { method: 'DELETE' })
+      await fetch(`${API_URL}/api/products/${id}`, { method: 'DELETE' })
       await fetchProducts()
     } catch (error) {
       console.log(error)

@@ -37,9 +37,9 @@ function Dashboard() {
   const fetchData = async () => {
     try {
       const [reportRes, salesRes, inventoryRes] = await Promise.all([
-        fetch('http://localhost:5000/api/reports'),
-        fetch('http://localhost:5000/api/sales'),
-        fetch('http://localhost:5000/api/inventory'),
+        fetch(`${API_URL}/api/reports`),
+        fetch(`${API_URL}/api/sales`),
+        fetch(`${API_URL}/api/inventory`),
       ])
       const [reportData, salesData, inventoryData] = await Promise.all([
         reportRes.json(),
