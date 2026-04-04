@@ -17,11 +17,8 @@ import reportRoutes from './src/routes/reportRoutes.js'
 const app = express()
 
 app.use(cors({
-  origin: [
-    'https://xg-inventory-frontend.onrender.com',
-    'http://localhost:5173'
-  ],
-  credentials: true
+  origin: '*',
+  credentials: false
 }))
 app.use(express.json())
 
