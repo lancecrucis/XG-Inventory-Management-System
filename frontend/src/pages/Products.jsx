@@ -292,7 +292,6 @@ function Products() {
                     value={form.unitCost}
                     onChange={(e) => setForm({ ...form, unitCost: e.target.value })}
                   />
-                  <p className="text-xs text-muted-foreground">What you paid the supplier</p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="unitPrice">Unit Price (₱) <span className="text-red-500">*</span></Label>
@@ -303,7 +302,6 @@ function Products() {
                     value={form.unitPrice}
                     onChange={(e) => setForm({ ...form, unitPrice: e.target.value })}
                   />
-                  <p className="text-xs text-muted-foreground">What you sell it for</p>
                 </div>
               </div>
 
