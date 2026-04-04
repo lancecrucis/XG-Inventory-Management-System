@@ -1,3 +1,4 @@
+import API_URL from '../config'
 import { useState, useEffect } from 'react'
 import { TrendingUp, TrendingDown, ArrowRight, AlertTriangle, Package, ShoppingCart } from 'lucide-react'
 import {
